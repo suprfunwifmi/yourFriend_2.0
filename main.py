@@ -5,11 +5,25 @@ import os
 import os.path
 import socket
 import platform
+import json
 
 def login():
-    print("this is a process")
-    
+    #print("this is a process")
+    name = raw_input("Name: ")
+    password = getpass.getpass("password: ")
+    with open("D://test.txt") as file:
+        data = json.load(file)
+        for user in data["user"]:
+            if name == user["name"] and password == user["password"]:
+                print "this was nice"
+            else:
+                print "not so nice"
+                print
+                login()
 
+
+
+    #    login()
 def GetSystemInformation():
     print("Your OS is " + platform.system()+" "+ platform.release())
     print("Your machine name is " + platform.machine())
@@ -37,11 +51,11 @@ def opening():
 #remove("D://test.txt")
     print("=====================================================================================================")
     print("=====================================================================================================")
-    time.sleep(2)
+    #time.sleep(2)
     print("                                          Yourfriend                                                 ")
     print("                                              by                                                     ")
     print("                                         Jason Millsom                                               ")
-    time.sleep(2)
+    #time.sleep(2)
     print("=====================================================================================================")
     print("=====================================================================================================")
     print
@@ -50,24 +64,28 @@ def opening():
     time.sleep(1)
 
 def Introduction():
-    file = open("D://Introduction.txt", "w+")
-    file.write("Introduction Process has started")
-    file.close()
+    data = {}
+    data["user"] = []
     print
     print("Hello")
     time.sleep(2)
     print("I am your friend")
 
-    firstName = raw_input("What is your name? ")
-    print("Hi " + firstName)
+    name = raw_input("What is your name? ")
+    print("Hi " + name)
     print
     time.sleep(3)
-    print(firstName + ", you will also need to set a password")
+    print(name + ", you will also need to set a password")
     password = getpass.getpass("Set password: ")
 
-    file = open("D://test.txt", "w+")
-    file.write(firstName +"\r\n" + password)
-    file.close()
+    data["user"].append({
+        "name": name,
+        "password": password
+    })
+
+    with open("D://test.txt", "w+") as file:
+        json.dump(data, file)
+
     print
 
     time.sleep(3)
@@ -82,6 +100,10 @@ def Introduction():
 
     print("I also know you are using " + platform.system()+" "+ platform.release())
     print
+
+    file = open("D://Introduction.txt", "w+")
+    file.write("Introduction Process has been complete")
+    file.close()
 
 opening()
 
