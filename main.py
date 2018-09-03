@@ -6,6 +6,10 @@ import os.path
 import socket
 import platform
 
+def login():
+    print("this is a process")
+    
+
 def GetSystemInformation():
     print("Your OS is " + platform.system()+" "+ platform.release())
     print("Your machine name is " + platform.machine())
@@ -46,6 +50,10 @@ def opening():
     time.sleep(1)
 
 def Introduction():
+    file = open("D://Introduction.txt", "w+")
+    file.write("Introduction Process has started")
+    file.close()
+    print
     print("Hello")
     time.sleep(2)
     print("I am your friend")
@@ -75,6 +83,9 @@ def Introduction():
     print("I also know you are using " + platform.system()+" "+ platform.release())
     print
 
-
 opening()
-Introduction()
+
+if os.path.isfile("D://Introduction.txt"):
+    login()
+else:
+    Introduction()
