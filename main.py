@@ -6,6 +6,7 @@ import os.path
 import socket
 import platform
 import json
+import base64
 
 def login():
     #print("this is a process")
@@ -14,13 +15,34 @@ def login():
     with open("D://test.txt") as file:
         data = json.load(file)
         for user in data["user"]:
-            if name == user["name"] and password == user["password"]:
+            getPassword = base64.b64decode(user["password"])
+            if name == user["name"] and password == getPassword:
                 print "this was nice"
+                process()
             else:
                 print "not so nice"
                 print
                 login()
 
+def changePassword():
+    print "Before Name or Password can be changed"
+    print "Your current identity has to be confirmed"
+    name = raw_input("Name: ")
+    password = getpass.getpass("password: ")
+    with open("D://test.txt") as file:
+        data = json.load(file)
+        for user in data["user"]:
+            getPassword = base64.b64decode(user["password"])
+            if name == user["name"] and password == getPassword:
+                newName = raw_input("new Name: ")
+                newPassword = getpass.getpass("new password: ")
+                newPassword = base64.b64encode(newPassword)
+                data.append({
+                    "name" : newName,
+                    "password" : newPassword
+                })
+    with open("D://test.txt", "w+") as file:
+        json.dump(data, file)
 
 
     #    login()
@@ -77,6 +99,7 @@ def Introduction():
     time.sleep(3)
     print(name + ", you will also need to set a password")
     password = getpass.getpass("Set password: ")
+    password = base64.b64encode(password)
 
     data["user"].append({
         "name": name,
@@ -105,9 +128,26 @@ def Introduction():
     file.write("Introduction Process has been complete")
     file.close()
 
+def process():
+    commands = {
+
+    }
+
+    for command in commands:
+        print command
+    print
+    input = raw_input("Command: ")
+
+    if input == "GetSystemInformation":
+        print
+        GetSystemInformation()
+
+
 opening()
 
 if os.path.isfile("D://Introduction.txt"):
     login()
+    process()
 else:
     Introduction()
+    process()
